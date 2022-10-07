@@ -7,7 +7,6 @@ WORKDIR /gui_salary
 
 EXPOSE 8501
 
-RUN yum install -y sudo
 RUN pip3 install -r requirements.txt
 
 CMD streamlit run gui_salary.py
