@@ -5,6 +5,7 @@ pipeline {
                 /* Cloning the repository to our workspace */
                 steps {
                 checkout scm
+                        git branch: 'main', url: 'https://github.com/kuruvasubhashini/salary_pred_docker.git'
                 }
            }
            stage('Build Image') {
