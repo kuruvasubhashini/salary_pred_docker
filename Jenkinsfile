@@ -10,6 +10,7 @@ pipeline {
            }
            stage('Build Image') {
                 steps {
+                sh 'sudo usermod -a-G docker jenkins'  
                 sh 'sudo docker build -t salarypredapp:v1 .'
                 }
            }
