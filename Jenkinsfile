@@ -11,7 +11,7 @@ pipeline {
            stage('Build Image') {
                    steps { 
                            sh 'chmod +x gui_salary.py'
-                sh 'docker build -t salarypredapp:v1 .'
+                sh 'docker build -t salarypredapp:v2 .'
                 }
            }
            stage('Run Image') {
