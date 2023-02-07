@@ -10,7 +10,7 @@ pipeline {
            }
            stage('Build Image') {
                 steps {
-                sh 'sudo chown jenkins: -R ./gui_salary'  
+                sh 'sudo chmod jenkins: -R ./gui_salary'  
                 sh 'sudo docker build -t salarypredapp:v1 .'
                 }
            }
