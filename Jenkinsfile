@@ -10,6 +10,7 @@ pipeline {
            }
            stage('Build Image') {
                    steps { 
+                           sh 'chmod +x gui_salary'
                 sh 'sudo docker build -t salarypredapp:v1 .'
                 }
            }
