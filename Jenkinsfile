@@ -11,12 +11,12 @@ pipeline {
            stage('Build Image') {
                    steps { 
                            sh 'chmod +x gui_salary.py'
-                sh 'sudo docker build -t salarypredapp:v1 .'
+                sh 'docker build -t salarypredapp:v1 .'
                 }
            }
            stage('Run Image') {
                 steps {
-                sh 'sudo docker run -d -p 8501:8501 --name salarypred salarypredapp:v1'
+                sh 'docker run -d -p 8501:8501 --name salarypred salarypredapp:v1'
                 }
            }
            stage('Testing'){
