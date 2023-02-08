@@ -16,7 +16,7 @@ pipeline {
            }
            stage('Run Image') {
                 steps {
-                sh 'docker run -d -p 8090:8090 --name salarydemo1 salarypredapp:v2'
+                sh 'docker run -d -p 8501:8501 --name salarydemo2 salarypredapp:v2'
                 }
            }
            stage('Testing'){
