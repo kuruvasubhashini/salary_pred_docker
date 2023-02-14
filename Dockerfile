@@ -5,7 +5,7 @@ COPY . /gui_salary
 
 WORKDIR /gui_salary
 
-EXPOSE 8080
+EXPOSE 8501
 
 RUN pip3 install -r requirements.txt
 
