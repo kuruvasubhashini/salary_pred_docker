@@ -1,36 +1,17 @@
 version: 0.2
-
-#env:
-  #variables:
-     # key: "There are no variables"
-  #parameter-store:
-     # key: "There are no variables"
-
 phases:
-  install:
-    #If you use the Ubuntu standard image 2.0 or later, you must specify runtime-versions.
-    #If you specify runtime-versions and use an image other than Ubuntu standard image 2.0, the build fails.
-    runtime-versions:
-       python: 3.7
-    #commands:
-      # - There are no build commands
-  pre_build:
+   pre-build:
     commands:
-      - pip install -r requirements.txt
-      - pip install -e .
-  build:
-    commands:
-      - pytest tests/unit/
-      - pytest tests/integration/ -rfs
-  post_build:
-    commands:
-      - python gui_salary.py sdist bdist_wheel
-#artifacts:
-  #files:
-    # - We don't currently preserve any artifacts
-  #name: $(date +%Y-%m-%d)
-  #discard-paths: yes
-  #base-directory: location
-#cache:
-  #paths:
-    # - We don't currently cache anything
+       - echo logging into amazon ECR...
+       - $(aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 927599552380.dkr.ecr.ap-south-1.amazonaws.com)
+    
+   build:
+     commands:
+        - echo building the docker image..
+        - docker build -t container-service .
+        - docker tag container-service:latest 927599552380.dkr.ecr.ap-south-1.amazonaws.com/container-service:latest
+        
+   post_build:
+     commands:
+        - echo pushing the docker image....
+        - docker push 927599552380.dkr.ecr.ap-south-1.amazonaws.com/container-service:latest
