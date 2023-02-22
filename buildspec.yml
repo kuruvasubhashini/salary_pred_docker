@@ -3,15 +3,24 @@ phases:
    pre-build:
     commands:
        - echo logging into amazon ECR...
-       - $(aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 927599552380.dkr.ecr.ap-south-1.amazonaws.com)
+       - aws --version
+       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-mail)
+       - REPOSITORY_URI=927599552380.dkr.ecr.ap-south-1.amazonaws.com/container-service
+       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+       - IMAGE_TAG=${COMMIT_HASH:=latest}
     
    build:
      commands:
         - echo building the docker image..
-        - docker build -t container-service .
-        - docker tag container-service:latest 927599552380.dkr.ecr.ap-south-1.amazonaws.com/container-service:latest
+        - docker build -t $REPOSITORY_URI:latest .
+        - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
         
    post_build:
      commands:
         - echo pushing the docker image....
-        - docker push 927599552380.dkr.ecr.ap-south-1.amazonaws.com/container-service:latest
+        - docker push $REPOSITORY_URI:latest
+        - docker push $REPOSITORY_URI:$IMAGE_TAG
+        - echo writing container image definitions file...
+        - printf '[{"name":"salarydemo","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG
+   artifacts:
+      files: imagedefinitions.json
