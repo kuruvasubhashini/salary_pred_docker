@@ -4,7 +4,7 @@ phases:
     commands:
        - echo logging into amazon ECR...
        - aws --version
-       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-mail)
+       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 927599552380.dkr.ecr.ap-south-1.amazonaws.com
        - REPOSITORY_URI=927599552380.dkr.ecr.ap-south-1.amazonaws.com/container-service
        - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
        - IMAGE_TAG=${COMMIT_HASH:=latest}
@@ -21,6 +21,6 @@ phases:
         - docker push $REPOSITORY_URI:latest
         - docker push $REPOSITORY_URI:$IMAGE_TAG
         - echo writing container image definitions file...
-        - printf '[{"name":"salarydemo","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG
+        - printf '[{"name":"salarydemo","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
    artifacts:
       files: imagedefinitions.json
