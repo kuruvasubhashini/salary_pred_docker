@@ -2,6 +2,7 @@ FROM python:3.7
 
 CMD mkdir /gui_salary
 COPY . /gui_salary
+COPY requirements.txt ./requirements.txt
 
 WORKDIR /gui_salary
 
